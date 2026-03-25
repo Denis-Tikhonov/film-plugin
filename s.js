@@ -2,30 +2,47 @@
     'use strict';
 
     function start() {
-        // Добавляем пункт в левое меню
-        Lampa.Panel.add({
-            title: 'ZonaFilm',
-            component: 'zonafilm',
-            icon: 'folder'
+        // Регистрируем компонент ПЕРЕД добавлением в меню
+        Lampa.Component.add('zonafilm', function (object) {
+            var comp = this;
+            var html = $('<div class="about"><div class="about__text">Плагин работает!</div></div>');
+
+            this.create = function () {
+                comp.activity.loader(false);
+                comp.activity.toggle();
+                return html;
+            };
+
+            this.back = function () {
+                Lampa.Activity.backward();
+            };
+
+            this.destroy = function () {
+                html.remove();
+            };
         });
 
-        // Регистрируем компонент
-        Lampa.Component.add('zonafilm', function () {
-            let html = $('<div class="about"><div class="about__text">Плагин работает!</div></div>');
-            Lampa.Controller.add('zonafilm', {
-                toggle: function () {
-                    Lampa.Controller.collectionSet(html);
-                    Lampa.Controller.collectionFocus(false, html);
-                },
-                back: function () {
-                    Lampa.Controller.toggle('menu');
-                }
-            });
-            Lampa.Controller.toggle('zonafilm');
+        // Добавляем пункт в меню
+        Lampa.Menu.add({
+            title: 'ZonaFilm',
+            subtitle: '',
+            icon: 'folder',
+            action: function () {
+                Lampa.Activity.push({
+                    url: '',
+                    title: 'ZonaFilm',
+                    component: 'zonafilm',
+                    page: 1
+                });
+            }
         });
     }
 
-    Lampa.Listener.follow('app', function (e) {
-        if (e.type === 'ready') start();
-    });
+    // Ждём готовности приложения
+    if (window.Lampa) {
+        Lampa.Listener.follow('app', function (e) {
+            if (e.type === 'ready') start();
+        });
+    }
+
 })();
