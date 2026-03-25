@@ -1,10 +1,8 @@
 {
   "id": "zonafilm",
   "name": "ZonaFilm",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "ZonaFilm plugin",
   "author": "Denis",
-  "description": "Просмотр фильмов с ZonaFilm в Lampa",
-  "url": "https://your-cloudflare-domain.pages.dev/main.js",
-  "type": "plugin"
+  "main": "main.js"
 }
-
