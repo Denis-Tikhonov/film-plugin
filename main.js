@@ -4,16 +4,15 @@
     function start() {
         if (!window.Lampa) return;
 
-        Lampa.Listener.follow('app', function (event) {
-            if (event.type === 'ready') {
-                Lampa.SettingsApi.addComponent({
-                    component: 'zonafilm',
-                    name: 'ZonaFilm',
-                    icon: 'folder',
-                    onSelect: openZonaFilm
-                });
-            }
+        // Добавляем пункт в главное меню
+        Lampa.Menu.add({
+            title: 'ZonaFilm',
+            icon: 'folder',
+            component: 'zonafilm'
         });
+
+        // Регистрируем компонент
+        Lampa.Component.add('zonafilm', openZonaFilm);
     }
 
     function openZonaFilm() {
@@ -51,7 +50,7 @@
                     Lampa.Controller.collectionFocus(false, scroll.render());
                 },
                 back: function () {
-                    Lampa.Controller.toggle('content');
+                    Lampa.Controller.toggle('menu');
                 }
             });
 
@@ -67,7 +66,6 @@
         }, (html) => {
             let dom = $(html);
 
-            // Ищем iframe плеера
             let iframe = dom.find('iframe').attr('src');
 
             if (iframe) {
@@ -86,4 +84,3 @@
         if (e.type === 'ready') start();
     });
 })();
-
